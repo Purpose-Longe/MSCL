@@ -1,15 +1,15 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { body, validationResult } = require('express-validator');
-const authMiddleware = require('../middleware/auth');
-const { Op } = require('sequelize');
-const {
+import { body, validationResult } from 'express-validator';
+import authMiddleware from '../middleware/auth.js';
+import { Op } from 'sequelize';
+import {
     WorkoutSession,
     WorkoutExerciseLog,
     StrengthWorkoutSession,
     CardioWorkoutSession,
     ExerciseLibrary,
-} = require('../models');
+} from '../models/index.js';
 
 /**
  * @swagger
@@ -390,4 +390,4 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;

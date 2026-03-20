@@ -1,22 +1,22 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+import createError from 'http-errors';
+import express from 'express';
+import path from 'path';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var authRouter = require('./routes/auth');
-var exercisesRouter = require('./routes/exercises');
-var workoutsRouter = require('./routes/workouts');
-var activitiesRouter = require('./routes/activities');
+import indexRouter from './routes/index.js';
+import usersRouter from './routes/users.js';
+import authRouter from './routes/auth.js';
+import exercisesRouter from './routes/exercises.js';
+import workoutsRouter from './routes/workouts.js';
+import activitiesRouter from './routes/activities.js';
 
-var { sequelize } = require('./models');
+import { sequelize } from './models/index.js';
 
-var app = express();
+const app = express();
 
-const swaggerJsdoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
 
 const options = {
   definition: {
@@ -87,4 +87,4 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+export default app;

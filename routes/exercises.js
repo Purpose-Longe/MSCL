@@ -1,8 +1,8 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { body, validationResult } = require('express-validator');
-const { ExerciseLibrary } = require('../models');
-const authMiddleware = require('../middleware/auth');
+import { body, validationResult } from 'express-validator';
+import { ExerciseLibrary } from '../models/index.js';
+import authMiddleware from '../middleware/auth.js';
 
 /**
  * @swagger
@@ -121,4 +121,4 @@ router.post(
     }
 );
 
-module.exports = router;
+export default router;

@@ -1,11 +1,11 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { body, validationResult } = require('express-validator');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const { User } = require('../models');
+import { body, validationResult } from 'express-validator';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import { User } from '../models/index.js';
 
-require('dotenv').config();
+import 'dotenv/config';
 
 /**
  * @swagger
@@ -171,4 +171,4 @@ router.post(
     }
 );
 
-module.exports = router;
+export default router;

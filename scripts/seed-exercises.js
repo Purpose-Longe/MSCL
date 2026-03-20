@@ -1,4 +1,4 @@
-import { ExerciseLibrary, sequelize } from '../models';
+import { ExerciseLibrary, sequelize } from '../models/index.js';
 
 const exercises = [
     { name: 'Bench Press', workout_type: 'strength', description: 'Barbell chest press.' },

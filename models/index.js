@@ -1,39 +1,47 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/database.js';
 
-const User = require('./user')(sequelize, DataTypes);
-const ExerciseLibrary = require('./exercise_library')(sequelize, DataTypes);
-const WorkoutSession = require('./workout_session')(sequelize, DataTypes);
-const WorkoutExerciseLog = require('./workout_exercise_log')(sequelize, DataTypes);
-const StrengthWorkoutSession = require('./strength_workout_session')(sequelize, DataTypes);
-const CardioWorkoutSession = require('./cardio_workout_session')(sequelize, DataTypes);
-const UserActivity = require('./user_activity')(sequelize, DataTypes);
+import User from './user.js';
+import ExerciseLibrary from './exercise_library.js';
+import WorkoutSession from './workout_session.js';
+import WorkoutExerciseLog from './workout_exercise_log.js';
+import StrengthWorkoutSession from './strength_workout_session.js';
+import CardioWorkoutSession from './cardio_workout_session.js';
+import UserActivity from './user_activity.js';
 
-User.hasMany(WorkoutSession, { foreignKey: 'user_id' });
-WorkoutSession.belongsTo(User, { foreignKey: 'user_id' });
+const UserModel = User(sequelize, DataTypes);
+const ExerciseLibraryModel = ExerciseLibrary(sequelize, DataTypes);
+const WorkoutSessionModel = WorkoutSession(sequelize, DataTypes);
+const WorkoutExerciseLogModel = WorkoutExerciseLog(sequelize, DataTypes);
+const StrengthWorkoutSessionModel = StrengthWorkoutSession(sequelize, DataTypes);
+const CardioWorkoutSessionModel = CardioWorkoutSession(sequelize, DataTypes);
+const UserActivityModel = UserActivity(sequelize, DataTypes);
 
-WorkoutSession.hasMany(WorkoutExerciseLog, { foreignKey: 'workout_session_id' });
-WorkoutExerciseLog.belongsTo(WorkoutSession, { foreignKey: 'workout_session_id' });
+UserModel.hasMany(WorkoutSessionModel, { foreignKey: 'user_id' });
+WorkoutSessionModel.belongsTo(UserModel, { foreignKey: 'user_id' });
 
-ExerciseLibrary.hasMany(WorkoutExerciseLog, { foreignKey: 'exercise_library_id' });
-WorkoutExerciseLog.belongsTo(ExerciseLibrary, { foreignKey: 'exercise_library_id' });
+WorkoutSessionModel.hasMany(WorkoutExerciseLogModel, { foreignKey: 'workout_session_id' });
+WorkoutExerciseLogModel.belongsTo(WorkoutSessionModel, { foreignKey: 'workout_session_id' });
 
-WorkoutExerciseLog.hasMany(StrengthWorkoutSession, { foreignKey: 'workout_exercise_log_id' });
-StrengthWorkoutSession.belongsTo(WorkoutExerciseLog, { foreignKey: 'workout_exercise_log_id' });
+ExerciseLibraryModel.hasMany(WorkoutExerciseLogModel, { foreignKey: 'exercise_library_id' });
+WorkoutExerciseLogModel.belongsTo(ExerciseLibraryModel, { foreignKey: 'exercise_library_id' });
 
-WorkoutExerciseLog.hasMany(CardioWorkoutSession, { foreignKey: 'workout_exercise_log_id' });
-CardioWorkoutSession.belongsTo(WorkoutExerciseLog, { foreignKey: 'workout_exercise_log_id' });
+WorkoutExerciseLogModel.hasMany(StrengthWorkoutSessionModel, { foreignKey: 'workout_exercise_log_id' });
+StrengthWorkoutSessionModel.belongsTo(WorkoutExerciseLogModel, { foreignKey: 'workout_exercise_log_id' });
 
-User.hasMany(UserActivity, { foreignKey: 'user_id' });
-UserActivity.belongsTo(User, { foreignKey: 'user_id' });
+WorkoutExerciseLogModel.hasMany(CardioWorkoutSessionModel, { foreignKey: 'workout_exercise_log_id' });
+CardioWorkoutSessionModel.belongsTo(WorkoutExerciseLogModel, { foreignKey: 'workout_exercise_log_id' });
 
-module.exports = {
+UserModel.hasMany(UserActivityModel, { foreignKey: 'user_id' });
+UserActivityModel.belongsTo(UserModel, { foreignKey: 'user_id' });
+
+export {
     sequelize,
-    User,
-    ExerciseLibrary,
-    WorkoutSession,
-    WorkoutExerciseLog,
-    StrengthWorkoutSession,
-    CardioWorkoutSession,
-    UserActivity,
+    UserModel as User,
+    ExerciseLibraryModel as ExerciseLibrary,
+    WorkoutSessionModel as WorkoutSession,
+    WorkoutExerciseLogModel as WorkoutExerciseLog,
+    StrengthWorkoutSessionModel as StrengthWorkoutSession,
+    CardioWorkoutSessionModel as CardioWorkoutSession,
+    UserActivityModel as UserActivity,
 };
