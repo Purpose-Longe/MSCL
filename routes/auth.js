@@ -7,6 +7,86 @@ const { User } = require('../models');
 
 require('dotenv').config();
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *         email:
+ *           type: string
+ *           format: email
+ *         dob:
+ *           type: string
+ *           format: date
+ *         weight:
+ *           type: number
+ *         height:
+ *           type: number
+ *     AuthResponse:
+ *       type: object
+ *       properties:
+ *         token:
+ *           type: string
+ *         user:
+ *           $ref: '#/components/schemas/User'
+ *     RegisterRequest:
+ *       type: object
+ *       required:
+ *         - email
+ *         - password
+ *       properties:
+ *         email:
+ *           type: string
+ *           format: email
+ *         password:
+ *           type: string
+ *           minLength: 6
+ *         dob:
+ *           type: string
+ *           format: date
+ *         weight:
+ *           type: number
+ *         height:
+ *           type: number
+ *     LoginRequest:
+ *       type: object
+ *       required:
+ *         - email
+ *         - password
+ *       properties:
+ *         email:
+ *           type: string
+ *           format: email
+ *         password:
+ *           type: string
+ */
+
+/**
+ * @swagger
+ * /api/v1/auth/register:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/RegisterRequest'
+ *     responses:
+ *       201:
+ *         description: User registered successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/AuthResponse'
+ *       400:
+ *         description: Validation error
+ */
 router.post(
     '/register',
     body('email').isEmail().withMessage('Email is invalid'),
@@ -37,6 +117,28 @@ router.post(
     }
 );
 
+/**
+* @swagger
+* /api/v1/auth/login:
+*   post:
+*     summary: Login user
+*     tags: [Auth]
+*     requestBody:
+*       required: true
+*       content:
+*         application/json:
+*           schema:
+*             $ref: '#/components/schemas/LoginRequest'
+*     responses:
+*       200:
+*         description: Login successful
+*         content:
+*           application/json:
+*             schema:
+*               $ref: '#/components/schemas/AuthResponse'
+*       400:
+*         description: Invalid credentials
+*/
 router.post(
     '/login',
     body('email').isEmail().withMessage('Email is invalid'),

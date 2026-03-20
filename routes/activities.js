@@ -4,6 +4,78 @@ const { body, validationResult } = require('express-validator');
 const { UserActivity } = require('../models');
 const authMiddleware = require('../middleware/auth');
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Activity:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *         user_id:
+ *           type: integer
+ *         description:
+ *           type: string
+ *         category:
+ *           type: string
+ *         time_created:
+ *           type: string
+ *           format: date-time
+ *     CreateActivityRequest:
+ *       type: object
+ *       required:
+ *         - description
+ *       properties:
+ *         description:
+ *           type: string
+ *         category:
+ *           type: string
+ */
+
+/**
+ * @swagger
+ * /api/v1/activities:
+ *   get:
+ *     summary: Get user's activities
+ *     tags: [Activities]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of activities
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 activities:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Activity'
+ *   post:
+ *     summary: Create a new activity
+ *     tags: [Activities]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/CreateActivityRequest'
+ *     responses:
+ *       201:
+ *         description: Activity created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 activity:
+ *                   $ref: '#/components/schemas/Activity'
+ */
+
 router.use(authMiddleware);
 
 router.get('/', async (req, res) => {

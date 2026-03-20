@@ -11,6 +11,242 @@ const {
     ExerciseLibrary,
 } = require('../models');
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     StrengthSet:
+ *       type: object
+ *       properties:
+ *         set:
+ *           type: integer
+ *         rep:
+ *           type: integer
+ *         weight:
+ *           type: number
+ *         unit:
+ *           type: string
+ *         type:
+ *           type: string
+ *         rest_time:
+ *           type: integer
+ *     CardioSet:
+ *       type: object
+ *       properties:
+ *         duration:
+ *           type: integer
+ *         distance:
+ *           type: number
+ *         calories:
+ *           type: number
+ *         pace:
+ *           type: string
+ *     WorkoutExercise:
+ *       type: object
+ *       properties:
+ *         exercise_library_id:
+ *           type: integer
+ *         order:
+ *           type: integer
+ *         rest_time:
+ *           type: integer
+ *         strength_sets:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/StrengthSet'
+ *         cardio_sets:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/CardioSet'
+ *     CreateWorkoutRequest:
+ *       type: object
+ *       required:
+ *         - name
+ *       properties:
+ *         name:
+ *           type: string
+ *         type:
+ *           type: string
+ *         started_at:
+ *           type: string
+ *           format: date-time
+ *         ended_at:
+ *           type: string
+ *           format: date-time
+ *         exercises:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/WorkoutExercise'
+ *     Workout:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *         user_id:
+ *           type: integer
+ *         name:
+ *           type: string
+ *         type:
+ *           type: string
+ *         started_at:
+ *           type: string
+ *           format: date-time
+ *         ended_at:
+ *           type: string
+ *           format: date-time
+ *         workout_exercise_logs:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: integer
+ *               exercise_library:
+ *                 $ref: '#/components/schemas/Exercise'
+ *               strength_workout_sessions:
+ *                 type: array
+ *                 items:
+ *                   $ref: '#/components/schemas/StrengthSet'
+ *               cardio_workout_sessions:
+ *                 type: array
+ *                 items:
+ *                   $ref: '#/components/schemas/CardioSet'
+ */
+
+/**
+ * @swagger
+ * /api/v1/workouts:
+ *   get:
+ *     summary: Get user's workouts
+ *     tags: [Workouts]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: startDate
+ *         schema:
+ *           type: string
+ *           format: date
+ *       - in: query
+ *         name: endDate
+ *         schema:
+ *           type: string
+ *           format: date
+ *     responses:
+ *       200:
+ *         description: List of workouts
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 workouts:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Workout'
+ *   post:
+ *     summary: Create a new workout
+ *     tags: [Workouts]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/CreateWorkoutRequest'
+ *     responses:
+ *       201:
+ *         description: Workout created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 workout:
+ *                   $ref: '#/components/schemas/Workout'
+ */
+
+/**
+ * @swagger
+ * /api/v1/workouts/{id}:
+ *   get:
+ *     summary: Get workout by ID
+ *     tags: [Workouts]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Workout details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 workout:
+ *                   $ref: '#/components/schemas/Workout'
+ *       404:
+ *         description: Workout not found
+ *   put:
+ *     summary: Update workout
+ *     tags: [Workouts]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               type:
+ *                 type: string
+ *               started_at:
+ *                 type: string
+ *                 format: date-time
+ *               ended_at:
+ *                 type: string
+ *                 format: date-time
+ *     responses:
+ *       200:
+ *         description: Workout updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 workout:
+ *                   $ref: '#/components/schemas/Workout'
+ *   delete:
+ *     summary: Delete workout
+ *     tags: [Workouts]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Workout deleted
+ */
+
 const includeWorkoutData = [
     {
         model: WorkoutExerciseLog,

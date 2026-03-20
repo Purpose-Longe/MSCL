@@ -4,6 +4,83 @@ const { body, validationResult } = require('express-validator');
 const { ExerciseLibrary } = require('../models');
 const authMiddleware = require('../middleware/auth');
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Exercise:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *         name:
+ *           type: string
+ *         workout_type:
+ *           type: string
+ *           enum: [cardio, strength]
+ *         description:
+ *           type: string
+ *         is_custom:
+ *           type: boolean
+ *         created_by:
+ *           type: integer
+ *     CreateExerciseRequest:
+ *       type: object
+ *       required:
+ *         - name
+ *         - workout_type
+ *       properties:
+ *         name:
+ *           type: string
+ *         workout_type:
+ *           type: string
+ *           enum: [cardio, strength]
+ *         description:
+ *           type: string
+ */
+
+/**
+ * @swagger
+ * /api/v1/exercises:
+ *   get:
+ *     summary: Get all exercises
+ *     tags: [Exercises]
+ *     responses:
+ *       200:
+ *         description: List of exercises
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 exercises:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Exercise'
+ *   post:
+ *     summary: Create a custom exercise
+ *     tags: [Exercises]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/CreateExerciseRequest'
+ *     responses:
+ *       201:
+ *         description: Exercise created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 exercise:
+ *                   $ref: '#/components/schemas/Exercise'
+ *       401:
+ *         description: Unauthorized
+ */
 // Public: list exercises
 router.get('/', async (req, res) => {
     try {

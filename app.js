@@ -15,6 +15,37 @@ var { sequelize } = require('./models');
 
 var app = express();
 
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'MSCL Backend API',
+      version: '1.0.0',
+      description: 'API for MSCL fitness tracking app',
+    },
+    servers: [
+      {
+        url: 'http://localhost:3000',
+      },
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
+  },
+  apis: ['./routes/*.js'], // paths to files containing OpenAPI definitions
+};
+
+const specs = swaggerJsdoc(options);
+
 sequelize
   .sync({ alter: true })
   .then(() => console.log('Database synchronized'))
@@ -29,6 +60,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
