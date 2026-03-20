@@ -1,4 +1,4 @@
-const { ExerciseLibrary, sequelize } = require('../models');
+import { ExerciseLibrary, sequelize } from '../models';
 
 const exercises = [
     { name: 'Bench Press', workout_type: 'strength', description: 'Barbell chest press.' },
